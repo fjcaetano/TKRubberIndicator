@@ -235,7 +235,7 @@ open class TKRubberPageControl : UIControl {
             
             smallBubble.positionChange(direction, radius: styleConfig.smallBubbleMoveRadius / 2, duration: styleConfig.animationDuration, beginTime: delay)
         }
-        currentIndex = index
+        
         mainBubblePositionChange(direction, position: point, duration: styleConfig.animationDuration)
         
         // 可以使用 Target-Action 监听事件
