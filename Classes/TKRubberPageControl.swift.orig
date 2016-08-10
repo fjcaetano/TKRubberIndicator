@@ -43,6 +43,8 @@ public struct TKRubberPageControlConfig {
     public var backgroundColor: UIColor = UIColor(red: 0.357, green: 0.196, blue: 0.337, alpha: 1)    // 横条背景颜色
     public var smallBubbleColor: UIColor = UIColor(red: 0.961, green: 0.561, blue: 0.518, alpha: 1)    // 小球颜色
     public var bigBubbleColor: UIColor = UIColor(red: 0.788, green: 0.216, blue: 0.337, alpha: 1)    // 大球颜色
+    
+    public init() { }
 }
 
 
@@ -52,11 +54,7 @@ public struct TKRubberPageControlConfig {
 open class TKRubberPageControl : UIControl {
     
     // 页数
-<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
-    open var numberOfpage : Int  = 5{
-=======
-    public var numberOfPages : Int  = 5 {
->>>>>>> Typos & Access control fixes
+    open var numberOfPages : Int  = 5 {
         didSet{
             if oldValue != numberOfPages{
                 resetRubberIndicator()
@@ -71,11 +69,7 @@ open class TKRubberPageControl : UIControl {
         }
     }
     // 事件闭包
-<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
-    open var valueChange  : ((Int) -> Void)?
-=======
-    public var valueChange  : UIControlValueChangeClosure?
->>>>>>> Typos & Access control fixes
+    open var valueChange  : UIControlValueChangeClosure?
     // 样式配置
     open var styleConfig  : TKRubberPageControlConfig {
         didSet {
@@ -163,13 +157,8 @@ open class TKRubberPageControl : UIControl {
         
         // 生成小球
         let bubbleOffset = styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace
-<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
         var bubbleFrame  = CGRect(x: x + styleConfig.bubbleXOffsetSpace + bubbleOffset , y: y + styleConfig.bubbleYOffsetSpace, width: styleConfig.smallBubbleSize, height: styleConfig.smallBubbleSize)
-        for _ in 0..<(numberOfpage-1){
-=======
-        var bubbleFrame  = CGRectMake(x + styleConfig.bubbleXOffsetSpace + bubbleOffset , y + styleConfig.bubbleYOffsetSpace, styleConfig.smallBubbleSize, styleConfig.smallBubbleSize)
         for _ in 0..<(numberOfPages-1){
->>>>>>> Typos & Access control fixes
             let smallBubble       = TKBubbleCell(style: styleConfig)
             smallBubble.frame     = bubbleFrame
             self.layer.addSublayer(smallBubble)
@@ -207,25 +196,13 @@ open class TKRubberPageControl : UIControl {
     }
     
     // Index值变化
-<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
     fileprivate func changIndexToValue(_ valueIndex: Int){
-        var index = valueIndex
-        if index >= numberOfpage{index = numberOfpage - 1}
-        if index < 0{index = 0}
-        if index == currentIndex {return}
-        
-        let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
-        let point     = CGPoint(x: xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, y: yPointbegin - styleConfig.bubbleYOffsetSpace/2)
-        let range     = (currentIndex < index) ? (currentIndex+1)...index : index...(currentIndex-1)
-=======
-    private func changIndexToValue(valueIndex: Int){
         var index = max(0, min(valueIndex, numberOfPages - 1))
         guard index != currentIndex else { return }
         
         let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
-        let point     = CGPointMake(xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, yPointbegin - styleConfig.bubbleYOffsetSpace/2)
+        let point     = CGPoint(x: xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, y: yPointbegin - styleConfig.bubbleYOffsetSpace/2)
         let range     = (currentIndex < index) ? Array((currentIndex+1)...index) : Array(index...(currentIndex-1)).reverse()
->>>>>>> Typos & Access control fixes
         
         
         let delay = styleConfig.animationDuration / 5
@@ -235,8 +212,6 @@ open class TKRubberPageControl : UIControl {
             let smallBubble      = smallBubbles[smallBubbleIndex]
             let delay = time + Double(i) * delay
             
-            print(time)
-            print(delay)
             smallBubble.positionChange(direction, radius: styleConfig.smallBubbleMoveRadius / 2, duration: styleConfig.animationDuration, beginTime: delay)
         }
         currentIndex = index
@@ -387,7 +362,10 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
 //                self.opacity = 0
                 var point = self.cachePosition
                 point.x += (styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace) * CGFloat(lastDirection.toBool() ? -1 : 1)
+<<<<<<< 99225e668c2bf0ab191ba95aff39a1606fb4bc74
 //                print(point)
+=======
+>>>>>>> Fixes
                 self.position = point
                 self.opacity = 1
                 CATransaction.commit()

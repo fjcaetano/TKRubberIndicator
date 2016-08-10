@@ -43,6 +43,8 @@ public struct TKRubberPageControlConfig {
     public var backgroundColor: UIColor = UIColor(red: 0.357, green: 0.196, blue: 0.337, alpha: 1)    // 横条背景颜色
     public var smallBubbleColor: UIColor = UIColor(red: 0.961, green: 0.561, blue: 0.518, alpha: 1)    // 小球颜色
     public var bigBubbleColor: UIColor = UIColor(red: 0.788, green: 0.216, blue: 0.337, alpha: 1)    // 大球颜色
+    
+    public init() { }
 }
 
 
@@ -210,8 +212,6 @@ open class TKRubberPageControl : UIControl {
             let smallBubble      = smallBubbles[smallBubbleIndex]
             let delay = time + Double(i) * delay
             
-            print(time)
-            print(delay)
             smallBubble.positionChange(direction, radius: styleConfig.smallBubbleMoveRadius / 2, duration: styleConfig.animationDuration, beginTime: delay)
         }
         currentIndex = index
@@ -362,7 +362,6 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
 //                self.opacity = 0
                 var point = self.cachePosition
                 point.x += (styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace) * CGFloat(lastDirection.toBool() ? -1 : 1)
-//                print(point)
                 self.position = point
                 self.opacity = 1
                 CATransaction.commit()
