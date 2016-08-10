@@ -10,13 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
 
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
+    let page = TKRubberPageControl(frame: CGRect(x: 100, y: 100, width: 200, height: 100), count: 3)
+=======
     var page: TKRubberPageControl!
+>>>>>>> Typos & Access control fixes
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let style = TKRubberPageControlConfig(animationDuration: 0.5)
-        page = TKRubberPageControl(frame: CGRect(x: 100, y: 100, width: 200, height: 100), count: 3, config: style)
+        page = TKRubberPageControl(frame: CGRectMake(100, 100, 200, 100), count: 3, config: style)
         
         self.view.backgroundColor = UIColor(red:0.553,  green:0.376,  blue:0.549, alpha:1)
         page.center = self.view.center
@@ -30,8 +34,13 @@ class ViewController: UIViewController {
         page.numberOfPages = 3
     }
     
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
     @IBAction func pageCountChange(_ sender: UISegmentedControl) {
+        page.numberOfpage = sender.selectedSegmentIndex + 3
+=======
+    @IBAction func pageCountChange(sender: UISegmentedControl) {
         page.numberOfPages = sender.selectedSegmentIndex + 3
+>>>>>>> Typos & Access control fixes
     }
     func targetActionValueChange(_ page:TKRubberPageControl){
         print("Target-Action : Page is \(page.currentIndex)")

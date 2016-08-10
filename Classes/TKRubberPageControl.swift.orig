@@ -52,7 +52,11 @@ public struct TKRubberPageControlConfig {
 open class TKRubberPageControl : UIControl {
     
     // 页数
-    open var numberOfPages : Int  = 5 {
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
+    open var numberOfpage : Int  = 5{
+=======
+    public var numberOfPages : Int  = 5 {
+>>>>>>> Typos & Access control fixes
         didSet{
             if oldValue != numberOfPages{
                 resetRubberIndicator()
@@ -67,7 +71,11 @@ open class TKRubberPageControl : UIControl {
         }
     }
     // 事件闭包
-    open var valueChange  : UIControlValueChangeClosure?
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
+    open var valueChange  : ((Int) -> Void)?
+=======
+    public var valueChange  : UIControlValueChangeClosure?
+>>>>>>> Typos & Access control fixes
     // 样式配置
     open var styleConfig  : TKRubberPageControlConfig {
         didSet {
@@ -155,8 +163,13 @@ open class TKRubberPageControl : UIControl {
         
         // 生成小球
         let bubbleOffset = styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
         var bubbleFrame  = CGRect(x: x + styleConfig.bubbleXOffsetSpace + bubbleOffset , y: y + styleConfig.bubbleYOffsetSpace, width: styleConfig.smallBubbleSize, height: styleConfig.smallBubbleSize)
+        for _ in 0..<(numberOfpage-1){
+=======
+        var bubbleFrame  = CGRectMake(x + styleConfig.bubbleXOffsetSpace + bubbleOffset , y + styleConfig.bubbleYOffsetSpace, styleConfig.smallBubbleSize, styleConfig.smallBubbleSize)
         for _ in 0..<(numberOfPages-1){
+>>>>>>> Typos & Access control fixes
             let smallBubble       = TKBubbleCell(style: styleConfig)
             smallBubble.frame     = bubbleFrame
             self.layer.addSublayer(smallBubble)
@@ -194,13 +207,25 @@ open class TKRubberPageControl : UIControl {
     }
     
     // Index值变化
+<<<<<<< 5780b7d0528998373c57d3c02569f905a41b4b91
     fileprivate func changIndexToValue(_ valueIndex: Int){
+        var index = valueIndex
+        if index >= numberOfpage{index = numberOfpage - 1}
+        if index < 0{index = 0}
+        if index == currentIndex {return}
+        
+        let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
+        let point     = CGPoint(x: xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, y: yPointbegin - styleConfig.bubbleYOffsetSpace/2)
+        let range     = (currentIndex < index) ? (currentIndex+1)...index : index...(currentIndex-1)
+=======
+    private func changIndexToValue(valueIndex: Int){
         var index = max(0, min(valueIndex, numberOfPages - 1))
         guard index != currentIndex else { return }
         
         let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
-        let point     = CGPoint(x: xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, y: yPointbegin - styleConfig.bubbleYOffsetSpace/2)
+        let point     = CGPointMake(xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, yPointbegin - styleConfig.bubbleYOffsetSpace/2)
         let range     = (currentIndex < index) ? Array((currentIndex+1)...index) : Array(index...(currentIndex-1)).reverse()
+>>>>>>> Typos & Access control fixes
         
         
         let delay = styleConfig.animationDuration / 5
