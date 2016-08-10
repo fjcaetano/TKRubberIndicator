@@ -34,17 +34,38 @@ private enum TKMoveDirection{
 // 样式配置 (含默认配置)
 
 public struct TKRubberPageControlConfig {
-    public var smallBubbleSize: CGFloat = 16     // 小球尺寸
-    public var mainBubbleSize: CGFloat = 40    // 大球尺寸
-    public var bubbleXOffsetSpace: CGFloat = 12    // 小球间距
-    public var bubbleYOffsetSpace: CGFloat = 8    // 纵向间距
-    public var animationDuration: CFTimeInterval = 0.2    // 动画时长
-    public var smallBubbleMoveRadius: CGFloat {return smallBubbleSize + bubbleXOffsetSpace}    // 小球运动半径
-    public var backgroundColor: UIColor = UIColor(red: 0.357, green: 0.196, blue: 0.337, alpha: 1)    // 横条背景颜色
-    public var smallBubbleColor: UIColor = UIColor(red: 0.961, green: 0.561, blue: 0.518, alpha: 1)    // 小球颜色
-    public var bigBubbleColor: UIColor = UIColor(red: 0.788, green: 0.216, blue: 0.337, alpha: 1)    // 大球颜色
+    public var smallBubbleSize: CGFloat     // 小球尺寸
+    public var mainBubbleSize: CGFloat    // 大球尺寸
+    public var bubbleXOffsetSpace: CGFloat    // 小球间距
+    public var bubbleYOffsetSpace: CGFloat    // 纵向间距
+    public var animationDuration: CFTimeInterval    // 动画时长
+    public var backgroundColor: UIColor    // 横条背景颜色
+    public var smallBubbleColor: UIColor    // 小球颜色
+    public var bigBubbleColor: UIColor    // 大球颜色
     
-    public init() { }
+    public var smallBubbleMoveRadius: CGFloat {    // 小球运动半径
+        return smallBubbleSize + bubbleXOffsetSpace
+    }
+    
+    public init(
+        smallBubbleSize: CGFloat = 16,
+        mainBubbleSize: CGFloat = 40,
+        bubbleXOffsetSpace: CGFloat = 12,
+        bubbleYOffsetSpace: CGFloat = 8,
+        animationDuration: CFTimeInterval = 0.2,
+        backgroundColor: UIColor = UIColor(red: 0.357, green: 0.196, blue: 0.337, alpha: 1),
+        smallBubbleColor: UIColor = UIColor(red: 0.961, green: 0.561, blue: 0.518, alpha: 1),
+        bigBubbleColor: UIColor = UIColor(red: 0.788, green: 0.216, blue: 0.337, alpha: 1)
+        ) {
+        self.smallBubbleSize = smallBubbleSize
+        self.mainBubbleSize = mainBubbleSize
+        self.bubbleXOffsetSpace = bubbleXOffsetSpace
+        self.bubbleYOffsetSpace = bubbleYOffsetSpace
+        self.animationDuration = animationDuration
+        self.backgroundColor = backgroundColor
+        self.smallBubbleColor = smallBubbleColor
+        self.bigBubbleColor = bigBubbleColor
+    }
 }
 
 
@@ -64,8 +85,8 @@ open class TKRubberPageControl : UIControl {
     
     // 当前 Index
     open var currentIndex  = 0 {
-        didSet {
-            changIndexToValue(currentIndex)
+        willSet {
+            moveToIndex(newValue)
         }
     }
     // 事件闭包
@@ -178,7 +199,7 @@ open class TKRubberPageControl : UIControl {
     
      // 重置控件
     open func resetRubberIndicator(){
-        changIndexToValue(0)
+        currentIndex = 0
         smallBubbles.forEach {$0.removeFromSuperlayer()}
         smallBubbles.removeAll()
         setUpView()
@@ -191,13 +212,13 @@ open class TKRubberPageControl : UIControl {
         let point = ges.location(in: self)
         if point.y > yPointbegin && point.y < yPointEnd && point.x > xPointbegin && point.x < xPointEnd{
             let index = Int(point.x - xPointbegin) / Int(styleConfig.smallBubbleMoveRadius)
-            changIndexToValue(index)
+            currentIndex = index
         }
     }
     
     // Index值变化
-    fileprivate func changIndexToValue(_ valueIndex: Int){
-        var index = max(0, min(valueIndex, numberOfPages - 1))
+    fileprivate func moveToIndex(_ valueIndex: Int){
+        let index = max(0, min(valueIndex, numberOfPages - 1))
         guard index != currentIndex else { return }
         
         let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
