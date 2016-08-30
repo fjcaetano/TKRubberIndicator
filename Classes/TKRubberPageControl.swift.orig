@@ -84,15 +84,9 @@ open class TKRubberPageControl : UIControl {
     }
     
     // 当前 Index
-<<<<<<< ac765dc3ccb0f0d4c9da16991f1eedfc276c5802
     open var currentIndex  = 0 {
-        didSet {
-            changIndexToValue(currentIndex)
-=======
-    public var currentIndex  = 0 {
         willSet {
             moveToIndex(newValue)
->>>>>>> Fixing index setter & Config public init
         }
     }
     // 事件闭包
@@ -204,13 +198,8 @@ open class TKRubberPageControl : UIControl {
     
     
      // 重置控件
-<<<<<<< ac765dc3ccb0f0d4c9da16991f1eedfc276c5802
     open func resetRubberIndicator(){
-        changIndexToValue(0)
-=======
-    public func resetRubberIndicator(){
         currentIndex = 0
->>>>>>> Fixing index setter & Config public init
         smallBubbles.forEach {$0.removeFromSuperlayer()}
         smallBubbles.removeAll()
         setUpView()
@@ -228,13 +217,8 @@ open class TKRubberPageControl : UIControl {
     }
     
     // Index值变化
-<<<<<<< ac765dc3ccb0f0d4c9da16991f1eedfc276c5802
-    fileprivate func changIndexToValue(_ valueIndex: Int){
-        var index = max(0, min(valueIndex, numberOfPages - 1))
-=======
-    private func moveToIndex(valueIndex: Int){
+    fileprivate func moveToIndex(_ valueIndex: Int){
         let index = max(0, min(valueIndex, numberOfPages - 1))
->>>>>>> Fixing index setter & Config public init
         guard index != currentIndex else { return }
         
         let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
@@ -249,10 +233,10 @@ open class TKRubberPageControl : UIControl {
             let smallBubble      = smallBubbles[smallBubbleIndex]
             let delay = time + Double(i) * delay
             
-            smallBubble.positionChange(direction, radius: styleConfig.smallBubbleMoveRadius / 2, duration: styleConfig.animationDuration, beginTime: delay)
+            smallBubble.positionChange(direction, beginTime: delay)
         }
-        currentIndex = index
-        mainBubblePositionChange(direction, position: point, duration: styleConfig.animationDuration)
+        
+        mainBubblePositionChange(index, position: point)
         
         // 可以使用 Target-Action 监听事件
         sendActions(for: UIControlEvents.valueChanged)
@@ -262,7 +246,11 @@ open class TKRubberPageControl : UIControl {
     }
     
     // 大球动画
+<<<<<<< 87f16c90f1c9f0de532618d9221f29a63387b579
     fileprivate func mainBubblePositionChange(_ direction: TKMoveDirection, position: CGPoint, duration: Double){
+=======
+    private func mainBubblePositionChange(index: Int, position: CGPoint) {
+>>>>>>> Fixing background position
         var point = position
         // 大球缩放动画
         let bubbleTransformAnim      = CAKeyframeAnimation(keyPath: "transform")
@@ -270,17 +258,17 @@ open class TKRubberPageControl : UIControl {
             NSValue(caTransform3D: CATransform3DMakeScale(bubbleScale, bubbleScale, 1)), 
             NSValue(caTransform3D: CATransform3DIdentity)]
         bubbleTransformAnim.keyTimes = [0, 0.5, 1]
-        bubbleTransformAnim.duration = duration
+        bubbleTransformAnim.duration = styleConfig.animationDuration
         
         
         // 大球移动动画, 用隐式动画大球的位置会真正的改变
         CATransaction.begin()
-        CATransaction.setAnimationDuration(duration)
+        CATransaction.setAnimationDuration(styleConfig.animationDuration)
         point.y += styleConfig.mainBubbleSize/2
         mainBubble.position = point
 
         point.y = 0
-        point.x = (xPointEnd - xPointbegin - styleConfig.bubbleXOffsetSpace/2) / CGFloat(numberOfPages) * CGFloat(currentIndex) - (styleConfig.bubbleYOffsetSpace / 4)
+        point.x = (styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace) * CGFloat(index)
         backgroundLayer.position = point
         CATransaction.commit()
         
@@ -334,8 +322,14 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
     }
     
     // beginTime 本来是留给小球轮播用的, 但是效果不好就没用了
+<<<<<<< 87f16c90f1c9f0de532618d9221f29a63387b579
     func positionChange(_ direction: TKMoveDirection, radius: CGFloat, duration: CFTimeInterval, beginTime: CFTimeInterval){
         
+=======
+    func positionChange(direction: TKMoveDirection, beginTime: CFTimeInterval){
+        let duration = styleConfig.animationDuration
+        let radius = styleConfig.smallBubbleMoveRadius / 2
+>>>>>>> Fixing background position
         let toLeft = direction.toBool()
         let movePath = UIBezierPath()
         var center = CGPoint.zero

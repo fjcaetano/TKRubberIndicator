@@ -233,10 +233,10 @@ open class TKRubberPageControl : UIControl {
             let smallBubble      = smallBubbles[smallBubbleIndex]
             let delay = time + Double(i) * delay
             
-            smallBubble.positionChange(direction, radius: styleConfig.smallBubbleMoveRadius / 2, duration: styleConfig.animationDuration, beginTime: delay)
+            smallBubble.positionChange(direction, beginTime: delay)
         }
         
-        mainBubblePositionChange(direction, position: point, duration: styleConfig.animationDuration)
+        mainBubblePositionChange(index, position: point)
         
         // 可以使用 Target-Action 监听事件
         sendActions(for: UIControlEvents.valueChanged)
@@ -246,7 +246,7 @@ open class TKRubberPageControl : UIControl {
     }
     
     // 大球动画
-    fileprivate func mainBubblePositionChange(_ direction: TKMoveDirection, position: CGPoint, duration: Double){
+    fileprivate func mainBubblePositionChange(_ index: Int, position: CGPoint) {
         var point = position
         // 大球缩放动画
         let bubbleTransformAnim      = CAKeyframeAnimation(keyPath: "transform")
@@ -254,17 +254,17 @@ open class TKRubberPageControl : UIControl {
             NSValue(caTransform3D: CATransform3DMakeScale(bubbleScale, bubbleScale, 1)), 
             NSValue(caTransform3D: CATransform3DIdentity)]
         bubbleTransformAnim.keyTimes = [0, 0.5, 1]
-        bubbleTransformAnim.duration = duration
+        bubbleTransformAnim.duration = styleConfig.animationDuration
         
         
         // 大球移动动画, 用隐式动画大球的位置会真正的改变
         CATransaction.begin()
-        CATransaction.setAnimationDuration(duration)
+        CATransaction.setAnimationDuration(styleConfig.animationDuration)
         point.y += styleConfig.mainBubbleSize/2
         mainBubble.position = point
 
         point.y = 0
-        point.x = (xPointEnd - xPointbegin - styleConfig.bubbleXOffsetSpace/2) / CGFloat(numberOfPages) * CGFloat(currentIndex) - (styleConfig.bubbleYOffsetSpace / 4)
+        point.x = (styleConfig.smallBubbleSize + styleConfig.bubbleXOffsetSpace) * CGFloat(index)
         backgroundLayer.position = point
         CATransaction.commit()
         
@@ -318,8 +318,9 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
     }
     
     // beginTime 本来是留给小球轮播用的, 但是效果不好就没用了
-    func positionChange(_ direction: TKMoveDirection, radius: CGFloat, duration: CFTimeInterval, beginTime: CFTimeInterval){
-        
+    fileprivate func positionChange(_ direction: TKMoveDirection, beginTime: CFTimeInterval){
+        let duration = styleConfig.animationDuration
+        let radius = styleConfig.smallBubbleMoveRadius / 2
         let toLeft = direction.toBool()
         let movePath = UIBezierPath()
         var center = CGPoint.zero
