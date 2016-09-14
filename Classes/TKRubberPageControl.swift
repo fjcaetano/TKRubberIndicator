@@ -279,7 +279,7 @@ open class TKRubberPageControl : UIControl {
 
 
 // MARK: - Small Bubble
-private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
+private class TKBubbleCell: CAShapeLayer {
     
     fileprivate var bubbleLayer = CAShapeLayer()
     fileprivate let bubbleScale   : CGFloat  = 0.5
@@ -371,9 +371,11 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
         bubbleShakeAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         self.bubbleLayer.add(bubbleShakeAnim, forKey: "Shake")
     }
-    
-    
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+}
+
+
+extension TKBubbleCell: CAAnimationDelegate {
+    func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         if let animate = anim as? CAKeyframeAnimation{
             if animate.keyPath == "position"{
                 removeAnimation(forKey: "Position")
@@ -390,5 +392,4 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
             }
         }
     }
-    
 }

@@ -246,11 +246,7 @@ open class TKRubberPageControl : UIControl {
     }
     
     // 大球动画
-<<<<<<< 87f16c90f1c9f0de532618d9221f29a63387b579
-    fileprivate func mainBubblePositionChange(_ direction: TKMoveDirection, position: CGPoint, duration: Double){
-=======
-    private func mainBubblePositionChange(index: Int, position: CGPoint) {
->>>>>>> Fixing background position
+    fileprivate func mainBubblePositionChange(_ index: Int, position: CGPoint) {
         var point = position
         // 大球缩放动画
         let bubbleTransformAnim      = CAKeyframeAnimation(keyPath: "transform")
@@ -322,14 +318,9 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
     }
     
     // beginTime 本来是留给小球轮播用的, 但是效果不好就没用了
-<<<<<<< 87f16c90f1c9f0de532618d9221f29a63387b579
-    func positionChange(_ direction: TKMoveDirection, radius: CGFloat, duration: CFTimeInterval, beginTime: CFTimeInterval){
-        
-=======
-    func positionChange(direction: TKMoveDirection, beginTime: CFTimeInterval){
+    fileprivate func positionChange(_ direction: TKMoveDirection, beginTime: CFTimeInterval){
         let duration = styleConfig.animationDuration
         let radius = styleConfig.smallBubbleMoveRadius / 2
->>>>>>> Fixing background position
         let toLeft = direction.toBool()
         let movePath = UIBezierPath()
         var center = CGPoint.zero
@@ -380,9 +371,17 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
         bubbleShakeAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         self.bubbleLayer.add(bubbleShakeAnim, forKey: "Shake")
     }
+<<<<<<< d0f915566e0a58b25e1421147a19121eb3f0126c
     
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+=======
+}
+
+
+extension TKBubbleCell: CAAnimationDelegate {
+    func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+>>>>>>> iOS 10 compatibilty
         if let animate = anim as? CAKeyframeAnimation{
             if animate.keyPath == "position"{
                 removeAnimation(forKey: "Position")
@@ -399,5 +398,8 @@ private class TKBubbleCell: CAShapeLayer, CAAnimationDelegate {
             }
         }
     }
+<<<<<<< d0f915566e0a58b25e1421147a19121eb3f0126c
     
+=======
+>>>>>>> iOS 10 compatibilty
 }
