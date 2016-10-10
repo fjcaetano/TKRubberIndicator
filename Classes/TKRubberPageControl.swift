@@ -223,12 +223,12 @@ open class TKRubberPageControl : UIControl {
         
         let direction = (currentIndex > index) ? TKMoveDirection.right : TKMoveDirection.left
         let point     = CGPoint(x: xPointbegin + styleConfig.smallBubbleMoveRadius * CGFloat(index) + styleConfig.mainBubbleSize/2, y: yPointbegin - styleConfig.bubbleYOffsetSpace/2)
-        let range     = (currentIndex < index) ? Array((currentIndex+1)...index) : Array(index...(currentIndex-1)).reverse()
+        let range     = (currentIndex < index) ? Array((currentIndex+1)...index) : Array(index...(currentIndex-1)).reversed()
         
         
-        let delay = styleConfig.animationDuration / 5
+        let delay = styleConfig.animationDuration / Double(numberOfPages + 2)
         let time = CACurrentMediaTime()
-        for (i, index) in range.enumerate() {
+        for (i, index) in range.enumerated() {
             let smallBubbleIndex = (direction.toBool()) ? (index - 1) : (index)
             let smallBubble      = smallBubbles[smallBubbleIndex]
             let delay = time + Double(i) * delay
@@ -375,7 +375,7 @@ private class TKBubbleCell: CAShapeLayer {
 
 
 extension TKBubbleCell: CAAnimationDelegate {
-    func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if let animate = anim as? CAKeyframeAnimation{
             if animate.keyPath == "position"{
                 removeAnimation(forKey: "Position")
